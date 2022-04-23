@@ -1,0 +1,37 @@
+{
+    "name": "generic-app-api",
+    "version": "1.0.0",
+    "description": "Api generica para manejar los datos de un sitio web",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node app",
+        "dev": "nodemon app"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yorvensito/generic-app-api.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/yorvensito/generic-app-api/issues"
+    },
+    "homepage": "https://github.com/yorvensito/generic-app-api#readme",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "cloudinary": "^1.27.1",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "express-fileupload": "^1.2.1",
+        "joi": "^17.4.2",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^6.0.13",
+        "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    }
+}

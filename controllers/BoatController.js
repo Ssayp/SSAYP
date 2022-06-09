@@ -2,7 +2,7 @@ const { response, request } = require("express");
 
 const Data = require("../models/BoatModel");
 
-const {  listService, disableService, updateService, createService } = require("../utils/transversalService");
+const {  listService, disableService, updateService, createService, listServiceBoatRGP } = require("../utils/transversalService");
 
 
 const create = (req = request, res = response) => {
@@ -21,9 +21,14 @@ const getAll = (req = request, res = response) => {
     listService(Data, req, res, null);
 }
 
+const getAllRgp = (req = request, res = response) => {
+    listServiceBoatRGP(req, res, null);
+}
+
 module.exports = {
     create,
     getAll,
     update,
-    disable
+    disable,
+    getAllRgp
 }

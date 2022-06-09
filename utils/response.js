@@ -10,6 +10,14 @@ const sendDataResponse = (res, message, data, { Data, req, action, isAuth }) => 
     });
 }
 
+const sendDataResponseApi = (res, message, data, { Data, req, action, isAuth }) => {
+    return res.status(statusCode.success).json({
+        success: true,
+        message,
+        ...data
+    });
+}
+
 const genericResponse = (res, message, { Data, req, action, object, isAuth }) => {
     saveActionLog(Data, req, action, `${object} | ${message}`, 'Success', isAuth);
     return res.status(statusCode.success).json({
@@ -41,5 +49,6 @@ module.exports = {
     internalError,
     genericResponse,
     sendDataResponse,
-    badRequestError
+    badRequestError,
+    sendDataResponseApi
 }

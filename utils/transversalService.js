@@ -1,6 +1,8 @@
 const { message } = require("../constants/response");
-const { sendDataResponse, genericResponse, internalError, badRequestError } = require("../utils/response");
+const { sendDataResponse, genericResponse, internalError, badRequestError, sendDataResponseApi } = require("../utils/response");
 const { Actions } = require("../constants/actionLogs");
+const { listBoats } = require("../services/BoatService.js");
+const { listFishermen } = require("../services/FishermenService.js");
 
 const listService = async(Data, req, res, isPopulate) => {
     
@@ -44,6 +46,28 @@ const listService = async(Data, req, res, isPopulate) => {
         sendDataResponse(res, message.list, { total, items }, { Data, req, action: Actions.list });
     }catch(error){
         internalError(res, error, { Data, req, action: Actions.list });
+    }
+    
+}
+
+const listServiceBoatRGP = async(req, res) => {
+    try{
+        let items = await listBoats(req);
+        const total = items.length;
+        sendDataResponseApi(res, message.list, { total, items }, { items, req, action: Actions.list });
+    }catch(error){
+        console.log(error);
+    }
+    
+}
+
+const listServiceFishermenRGP = async(req, res) => {
+    try{
+        let items = await listFishermen(req);
+        const total = items.length;
+        sendDataResponseApi(res, message.list, { total, items }, { items, req, action: Actions.list });
+    }catch(error){
+        console.log(error);
     }
     
 }
@@ -157,5 +181,7 @@ module.exports = {
     updateService,
     createService,
     listService,
-    reportServices
+    reportServices,
+    listServiceBoatRGP,
+    listServiceFishermenRGP
 }

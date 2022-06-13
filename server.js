@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
-const { routes } = require('../constants/routes')
+const { routes } = require('./constants/routes');
 
+const { dbConnection } = require('./database/config');
 
-const { dbConnection } = require('../database/config');
 
 class Server {
 
@@ -19,6 +19,7 @@ class Server {
         this.middlewares();
 
         this.routes();
+
 
         
     }

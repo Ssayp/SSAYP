@@ -5,7 +5,7 @@ const { listBoats } = require("../services/BoatService.js");
 const { listFishermen } = require("../services/FishermenService.js");
 
 const listService = async(Data, req, res, isPopulate) => {
-    
+
     try{
         let aditionQuery = req.aditionalQuery;
         if(typeof aditionQuery != "object"){
@@ -18,7 +18,7 @@ const listService = async(Data, req, res, isPopulate) => {
         if(isPopulate == null || isPopulate == undefined || typeof isPopulate != "object")
             for (let index = 0; index < 7; index++) {
                 populate[`populate${index}`] = "";
-                
+
             }
         else
             for (let index = 0; index < 7; index++) {
@@ -27,8 +27,8 @@ const listService = async(Data, req, res, isPopulate) => {
                 else
                     populate[`populate${index}`] = isPopulate[`populate${index}`]
             }
-        
-        
+
+
         const [ total, items ] = await Promise.all([
             Data.countDocuments(query),
             Data.find(query)
@@ -47,35 +47,35 @@ const listService = async(Data, req, res, isPopulate) => {
     }catch(error){
         internalError(res, error, { Data, req, action: Actions.list });
     }
-    
+
 }
 
 const listServiceBoatRGP = async(req, res) => {
     try{
         let items = await listBoats(req);
-        const total = items.length;
-        sendDataResponseApi(res, message.list, { total, items }, { items, req, action: Actions.list });
-    }catch(error){
-        console.log(error);
+        sendDataResponseApi(res, message.list, { data: items }, { items, req, action: Actions.list });
     }
-    
+    catch(error){
+        res.status(error?.response?.status || 500).send({message: 'Error al consumir el api RGP'})
+    }
+
 }
 
 const listServiceFishermenRGP = async(req, res) => {
     try{
         let items = await listFishermen(req);
-        const total = items.length;
-        sendDataResponseApi(res, message.list, { total, items }, { items, req, action: Actions.list });
-    }catch(error){
-        console.log(error);
+        sendDataResponseApi(res, message.list, { data: items }, { items, req, action: Actions.list });
     }
-    
+    catch(error){
+        res.status(error?.response?.status || 500).send({message: 'Error al consumir el api RGP'})
+    }
+
 }
 
 const reportServices = async(Data, req, res, isPopulate) => {
     try{
         const { aditionalQuery, between, less, greater } = req.body;
-        
+
         let dateBetween = {};
         if(between != undefined && between.min && between.max)
             dateBetween = { $and:[{issue_date: { $gte: between.min }}, {issue_date: { $lte: between.max }}] };
@@ -83,7 +83,7 @@ const reportServices = async(Data, req, res, isPopulate) => {
             dateBetween = {issue_date: { $lte: less }};
         else if(greater)
             dateBetween = {issue_date: { $gte: greater }};
-        
+
         const { limit = 10, from = 0, active } = req.query;
         const query = { is_active: active != undefined ? active : true, ...dateBetween, ...aditionalQuery };
 
@@ -91,7 +91,7 @@ const reportServices = async(Data, req, res, isPopulate) => {
         if(isPopulate == null || isPopulate == undefined || typeof isPopulate != "object")
             for (let index = 0; index < 7; index++) {
                 populate[`populate${index}`] = "";
-                
+
             }
         else
             for (let index = 0; index < 7; index++) {
@@ -118,7 +118,7 @@ const reportServices = async(Data, req, res, isPopulate) => {
     }catch(error){
         internalError(res, error, { Data, req, action: Actions.list });
     }
-    
+
 }
 
 const disableService = (Data, req, res) => {
@@ -142,7 +142,7 @@ const disableService = (Data, req, res) => {
 const updateService = (Data, req, res) => {
     try{
         const update = req.body;
-        
+
         Data.findByIdAndUpdate(update._id, update,
             (error) => {
                 if(error)
